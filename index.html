@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="ReMeDI-SAM3: Memory-Enhanced SAM3 for Occlusion-Robust Surgical Instrument Segmentation">
+  <meta name="keywords" content="SAM3, Surgical Instrument Segmentation, Video Object Segmentation, Medical Imaging, Occlusion Handling">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ReMeDI-SAM3: Memory-Enhanced SAM3 for Occlusion-Robust Surgical Instrument Segmentation</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+
+  <style>
+    .hero-body {
+      padding-top: 3rem;
+      padding-bottom: 2rem;
+    }
+    .publication-title {
+      font-size: 2.2rem !important;
+    }
+    .method-image {
+      max-width: 100%;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .results-table {
+      margin: 0 auto;
+      border-collapse: collapse;
+    }
+    .results-table th, .results-table td {
+      padding: 0.75rem 1rem;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    .results-table th {
+      background-color: #f5f5f5;
+      font-weight: 600;
+    }
+    .results-table tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+    .highlight-row {
+      background-color: #e8f5e9 !important;
+      font-weight: 600;
+    }
+    .teaser-figure {
+      max-width: 90%;
+      margin: 0 auto;
+    }
+    .conference-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Memory-Enhanced SAM3 for Occlusion-Robust Surgical Instrument Segmentation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="#">Valay Bundele</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="#">Mehran Hosseinzadeh</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="#">Hendrik P. A. Lensch</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>University of Tübingen, Germany</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (Coming Soon)</span>
+                  </a>
+              </span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <div class="teaser-figure">
+        <img src="./static/images/teaser.png" alt="Teaser figure showing SAM3 vs ReMeDI-SAM3 comparison" style="width: 100%; max-width: 1000px; display: block; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+      </div>
+      <h2 class="subtitle has-text-centered" style="margin-top: 1.5rem;">
+        <span style="font-weight: 600;">SAM3 vs ReMeDI-SAM3 (Ours):</span> The orange-labeled instrument gets occluded after T=153 and re-appears at T=165. 
+        While SAM3 produces false positives after its re-appearance, <span style="color: #667eea; font-weight: 600;">ReMeDI-SAM3</span> maintains consistent identities across occlusion and re-entry.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Accurate surgical instrument segmentation in endoscopic videos is crucial for computer-assisted interventions, yet remains challenging due to frequent occlusions, rapid motion, specular artefacts, and long-term instrument re-entry. While SAM3 provides a powerful spatio-temporal framework for video object segmentation, its performance in surgical scenes is limited by indiscriminate memory updates, fixed memory capacity, and weak identity recovery after occlusions.
+          </p>
+          <p>
+            We propose <strong>ReMeDI-SAM3</strong>, a training-free memory-enhanced extension of SAM3, that addresses these limitations through three components: 
+            <strong>(i)</strong> relevance-aware memory filtering with a dedicated occlusion-aware memory for storing pre-occlusion frames, 
+            <strong>(ii)</strong> a piecewise interpolation scheme that expands the effective memory capacity, and 
+            <strong>(iii)</strong> a feature-based re-identification module with temporal voting for reliable post-occlusion identity disambiguation.
+            Together, these components mitigate error accumulation and enable reliable recovery after occlusions. Evaluations on <strong>EndoVis17</strong> and <strong>EndoVis18</strong> under a zero-shot setting show absolute mcIoU improvements of around <strong>7%</strong> and <strong>16%</strong>, respectively, over vanilla SAM3, outperforming even prior training-based approaches.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+  </div>
+</section>
+
+
+<section class="section" style="background-color: #f5f5f5;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Method Overview</h2>
+        <div class="content has-text-centered">
+          <img src="./static/images/final_pipeline.png" alt="ReMeDI-SAM3 Pipeline" class="method-image" style="max-width: 100%;">
+        </div>
+        <div class="content has-text-justified">
+          <p>We propose <strong>ReMeDI-SAM3</strong>: <strong>Re</strong>fined <strong>Me</strong>mory for <strong>D</strong>isambiguation of <strong>I</strong>dentities with <strong>SAM3</strong>, a training-free extension of SAM3 to enhance temporal consistency and identity preservation in surgical videos. The pipeline is shown above. Our approach (1) restructures SAM3 memory into two components: (i) a <emph>relevance-aware memory</emph> that admits only high-confidence frames to stabilize temporal propagation, and (ii) an <emph>occlusion–aware memory</emph> that selectively retains pre-occlusion appearance cues to facilitate identity recovery. Building upon this design, we further introduce (2) a <emph>novel memory expansion scheme</emph> based on piecewise interpolation of temporal positional encodings, enabling larger memory without retraining, and (3) a <emph>feature-based re-identification module with temporal voting</emph> for robust post-occlusion identity verification and correction. Together, these components improve robustness to occlusions, tracking stability, and reliable instrument re-entry handling in surgical videos. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered"> -->
+      <!-- <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Key Contributions</h2>
+        
+        <div class="columns is-multiline" style="margin-top: 2rem;">
+          <div class="column is-4">
+            <div class="box" style="height: 100%; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);">
+              <h3 class="title is-5">
+                <span class="icon"><i class="fas fa-memory"></i></span>
+                Dual-Memory Design
+              </h3>
+              <p>Combines relevance-aware propagation with a dedicated occlusion-aware memory for post-occlusion recovery.</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="box" style="height: 100%; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);">
+              <h3 class="title is-5">
+                <span class="icon"><i class="fas fa-fingerprint"></i></span>
+                Re-Identification Module
+              </h3>
+              <p>Lightweight feature-based module with temporal voting for explicit identity verification after occlusions.</p>
+            </div>
+          </div>
+          <div class="column is-4">
+            <div class="box" style="height: 100%; background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);">
+              <h3 class="title is-5">
+                <span class="icon"><i class="fas fa-expand-arrows-alt"></i></span>
+                Memory Expansion
+              </h3>
+              <p>Novel strategy enabling long-horizon memory retention without retraining or architectural modifications.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+<section class="section" style="background-color: #f5f5f5;">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Results</h2>
+        
+        <div class="content has-text-centered" style="margin-top: 2rem;">
+          <p class="has-text-justified">
+            Our method achieves state-of-the-art results on both EndoVis17 and EndoVis18 benchmarks under zero-shot settings, 
+            outperforming both vanilla SAM3 and prior training-based approaches.
+          </p>
+          
+
+          
+          <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center; margin-top: 2rem;">
+            <!-- EndoVis17 Table -->
+            <div style="flex: 1; min-width: 400px;">
+              <h4 class="title is-5" style="margin-bottom: 1rem;">EndoVis17</h4>
+              <table class="results-table" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Challenge IoU</th>
+                    <th>IoU</th>
+                    <th>mcIoU</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ISINet</td>
+                    <td>55.62</td>
+                    <td>52.20</td>
+                    <td>28.96</td>
+                  </tr>
+                  <tr>
+                    <td>S3Net</td>
+                    <td>72.54</td>
+                    <td>71.99</td>
+                    <td>46.55</td>
+                  </tr>
+                  <tr>
+                    <td>MATIS Frame</td>
+                    <td>68.79</td>
+                    <td>62.74</td>
+                    <td>37.30</td>
+                  </tr>
+                  <tr>
+                    <td>TP-SIS</td>
+                    <td>63.37</td>
+                    <td>63.37</td>
+                    <td>52.74</td>
+                  </tr>
+                  <tr>
+                    <td>TrackAnything</td>
+                    <td>67.41</td>
+                    <td>64.50</td>
+                    <td>62.97</td>
+                  </tr>
+                  <tr>
+                    <td>SurgicalSAM</td>
+                    <td>69.94</td>
+                    <td>69.94</td>
+                    <td>67.03</td>
+                  </tr>
+                  <tr>
+                    <td>SP-SAM</td>
+                    <td>73.94</td>
+                    <td>73.94</td>
+                    <td>71.06</td>
+                  </tr>
+                  <tr>
+                    <td>MA-SAM2 (Zero-Shot)</td>
+                    <td>62.49</td>
+                    <td>62.49</td>
+                    <td>59.89</td>
+                  </tr>
+                  <tr>
+                    <td>SAM3 (Zero-Shot)</td>
+                    <td>71.32</td>
+                    <td>71.32</td>
+                    <td>68.79</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td><strong>ReMeDI-SAM3 (Ours)</strong></td>
+                    <td><strong>78.57</strong></td>
+                    <td><strong>78.57</strong></td>
+                    <td><strong>75.65</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- EndoVis18 Table -->
+            <div style="flex: 1; min-width: 400px;">
+              <h4 class="title is-5" style="margin-bottom: 1rem;">EndoVis18</h4>
+              <table class="results-table" style="width: 100%;">
+                <thead>
+                  <tr>
+                    <th>Method</th>
+                    <th>Challenge IoU</th>
+                    <th>IoU</th>
+                    <th>mcIoU</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ISINet</td>
+                    <td>73.03</td>
+                    <td>70.94</td>
+                    <td>40.21</td>
+                  </tr>
+                  <tr>
+                    <td>S3Net</td>
+                    <td>75.81</td>
+                    <td>74.02</td>
+                    <td>42.58</td>
+                  </tr>
+                  <tr>
+                    <td>MATIS Frame</td>
+                    <td>82.37</td>
+                    <td>77.01</td>
+                    <td>48.65</td>
+                  </tr>
+                  <tr>
+                    <td>TP-SIS</td>
+                    <td>84.92</td>
+                    <td>83.61</td>
+                    <td>65.44</td>
+                  </tr>
+                  <tr>
+                    <td>TrackAnything</td>
+                    <td>65.72</td>
+                    <td>60.88</td>
+                    <td>38.60</td>
+                  </tr>
+                  <tr>
+                    <td>SurgicalSAM</td>
+                    <td>80.33</td>
+                    <td>80.33</td>
+                    <td>58.87</td>
+                  </tr>
+                  <tr>
+                    <td>SP-SAM</td>
+                    <td>84.24</td>
+                    <td>84.24</td>
+                    <td>65.71</td>
+                  </tr>
+                  <tr>
+                    <td>SAM3 (Zero-Shot)</td>
+                    <td>88.04</td>
+                    <td>81.82</td>
+                    <td>66.46</td>
+                  </tr>
+                  <tr class="highlight-row">
+                    <td><strong>ReMeDI-SAM3 (Ours)</strong></td>
+                    <td><strong>88.24</strong></td>
+                    <td><strong>87.46</strong></td>
+                    <td><strong>82.23</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div style="margin: 2rem auto; max-width: 1000px;">
+            <img src="./static/images/main_results.png" alt="Main results comparison" style="width: 100%; display: block; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <p style="margin-top: 1rem; font-style: italic; color: #666; text-align: center; font-size: 0.95rem;">
+              Qualitative comparison of SAM3 and ReMeDI-SAM3 on a challenging occlusion and reappearance case in EndoVis17. After the orange-labeled instrument becomes fully occluded at T=44, SAM3 exhibits identity drift and incorrectly assigns the orange identity to the visible green instrument, with this mislabeling persisting across subsequent frames. In contrast, ReMeDI-SAM3 suppresses such false-positive identity propagation during the occlusion and correctly re-identifies the true instrument upon reappearance.
+            </p>
+          </div>
+          
+          <div style="margin: 2rem auto; max-width: 1000px;">
+            <img src="./static/images/ev17_1.png" alt="EndoVis17 qualitative results" style="width: 100%; display: block; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+            <p style="margin-top: 1rem; font-style: italic; color: #666; text-align: center; font-size: 0.95rem;">
+              Qualitative comparison on EndoVis17 showing instrument turnover. The orange instrument (Bipolar Forceps) exits the scene after T=75, and a second red instrument (Prograsp Forceps) enters later (T=126-132). ReMeDI-SAM3 initially misses the new instrument (T=126) as it's not clearly visible but subsequently correctly recovers and assigns the red identity once sufficient evidence is available. In contrast, SAM3 incorrectly preserves orange identity after occlusion, continuing to label the new red instrument as orange.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- <section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3 has-text-centered">Memory Expansion via Temporal Position Interpolation</h2>
+        <div class="content has-text-centered">
+          <img src="./static/images/temporal_pos_encoding_visualization.png" alt="Temporal Position Encoding Visualization" class="method-image" style="max-width: 80%;">
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Long surgical procedures require long-horizon temporal context, yet SAM3 is constrained by a fixed set of temporal positional encodings. 
+            We propose a <strong>piecewise interpolation scheme</strong> over temporal positional encodings that generates additional valid temporal positions, 
+            enabling substantially larger memory capacity without retraining.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <h2 class="title is-3 has-text-centered">Acknowledgements</h2>
+        <div class="content has-text-justified">
+          <p>
+            The work described in this paper was conducted in the framework of Graduate School 2543/1 "Intraoperative Multi-Sensory Tissue Differentiation in Oncology" (project ID 40947457) funded by German Research Foundation (DFG - Deutsche Forschungsgemeinschaft). This work has been supported by the Deutsche Forschungsgemeinschaft (DFG) – EXC number 2064/1 – Project number 390727645.
+            The authors thank International Max Planck Research School for Intelligent Systems (IMPRS-IS) for supporting Valay Bundele and Mehran Hosseinzadeh. We also thank Jan-Niklas Dihlmann for redesigning the pipeline figure.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{bundele2026remedi,
+  author    = {Bundele, Valay and Hosseinzadeh, Mehran and Lensch, Hendrik P. A.},
+  title     = {Memory-Enhanced SAM3 for Occlusion-Robust Surgical Instrument Segmentation},
+  journal   = {arXiv preprint},
+  year      = {2026},
+}</code></pre>
+  </div>
+</section> -->
+
+<footer class="footer">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content" style="text-align: center;">
+          <p>
+            This website template is borrowed from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+          </p>
+          <p>
+            <a href="#">University of Tübingen</a> · Computer Graphics Group
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
