@@ -179,6 +179,18 @@
         <div class="content has-text-justified">
           <p>We propose <strong>ReMeDI-SAM3</strong>: <strong>Re</strong>fined <strong>Me</strong>mory for <strong>D</strong>isambiguation of <strong>I</strong>dentities with <strong>SAM3</strong>, a training-free extension of SAM3 to enhance temporal consistency and identity preservation in surgical videos. The pipeline is shown above. Our approach (1) restructures SAM3 memory into two components: (i) a <emph>relevance-aware memory</emph> that admits only high-confidence frames to stabilize temporal propagation, and (ii) an <emph>occlusion–aware memory</emph> that selectively retains pre-occlusion appearance cues to facilitate identity recovery. Building upon this design, we further introduce (2) a <emph>novel memory expansion scheme</emph> based on piecewise interpolation of temporal positional encodings, enabling larger memory without retraining, and (3) a <emph>feature-based re-identification module with temporal voting</emph> for robust post-occlusion identity verification and correction. Together, these components improve robustness to occlusions, tracking stability, and reliable instrument re-entry handling in surgical videos. </p>
         </div>
+
+        <h3 class="title is-4 has-text-centered" style="margin-top: 3rem;">Memory Expansion via Temporal Position Interpolation</h3>
+        <div class="content has-text-centered">
+          <img src="./static/images/temporal_pos_encoding_visualization.png" alt="Temporal Position Encoding Visualization" class="method-image" style="max-width: 80%;">
+        </div>
+        <div class="content has-text-justified">
+          <p>
+            Long surgical procedures require long-horizon temporal context, yet SAM3 is constrained by a fixed set of temporal positional encodings.
+            We propose a <strong>piecewise interpolation scheme</strong> over temporal positional encodings that preserves the boundary embeddings and samples new positions only in the interior region,
+            enabling substantially larger memory capacity without retraining. Uniform interpolation, in contrast, distorts the learned boundary temporal priors.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -238,6 +250,7 @@
             outperforming both vanilla SAM3 and prior training-based approaches. On EndoVis17, ReMeDI-SAM3 improves over vanilla SAM3 by 6% IoU and 5.8% mcIoU.
             The improvement is statistically significant (Wilcoxon p=0.023), with ReMeDI-SAM3 outperforming SAM3 on 7 of 8 sequences (95% cluster-bootstrap CI [0.64, 8.13]) and reducing sequence-level standard deviation by 20% (74.50 ± 14.13 vs 69.04 ± 17.75 mcIoU).
             On EndoVis18, we obtain gains of 3.5% IoU and 8% mcIoU. The larger mcIoU gain reflects improved suppression of false positives for absent instruments via our identity-aware design.
+            On CholecSeg8k, a broader surgical semantic segmentation benchmark, we observe consistent zero-shot gains of 1% IoU and 2% mcIoU.
             SAM-family methods use a first-appearance ground-truth mask prompt; specialist methods follow their original settings.
           </p>
           
@@ -438,8 +451,13 @@
                 </tr>
               </tbody>
             </table>
-            <p style="margin-top: 1rem; font-style: italic; color: #666; text-align: center; font-size: 0.95rem;">
-              On CholecSeg8k, a broader surgical semantic segmentation benchmark, ReMeDI-SAM3 achieves consistent zero-shot gains of 1% IoU and 2% mcIoU over vanilla SAM3.
+          </div>
+
+          <div class="content has-text-justified" style="margin-top: 2rem;">
+            <p>
+              <strong>Efficiency &amp; Scalability.</strong> SAM3 already maintains per-object memory by fusing per-object masks with image features; ReMeDI differs in using a larger memory bank and a different frame-selection strategy.
+              On EndoVis18 with a single RTX 4090, ReMeDI incurs modest overhead compared to SAM3: 6,299 vs 6,010 MB peak GPU memory (+4.8%), 4,820 vs 4,767 MB average GPU memory (+1.1%), and 351.1 vs 329.7 ms/frame latency (+6.5%).
+              The expanded memory bank (M=15 vs 7) adds only ~5% to memory-attention cost since compute is dominated by the image encoder. To ensure scalability, the unconditional buffer has a maximum size of 15 while the ReID bank is capped at 15 entries per object.
             </p>
           </div>
 
@@ -464,27 +482,6 @@
 
 
 <section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3 has-text-centered">Memory Expansion via Temporal Position Interpolation</h2>
-        <div class="content has-text-centered">
-          <img src="./static/images/temporal_pos_encoding_visualization.png" alt="Temporal Position Encoding Visualization" class="method-image" style="max-width: 80%;">
-        </div>
-        <div class="content has-text-justified">
-          <p>
-            Long surgical procedures require long-horizon temporal context, yet SAM3 is constrained by a fixed set of temporal positional encodings.
-            We propose a <strong>piecewise interpolation scheme</strong> over temporal positional encodings that preserves the boundary embeddings and samples new positions only in the interior region,
-            enabling substantially larger memory capacity without retraining. Uniform interpolation, in contrast, distorts the learned boundary temporal priors.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section class="section" style="background-color: #f5f5f5;">
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
@@ -552,14 +549,6 @@
               </table>
             </div>
           </div>
-        </div>
-
-        <div class="content has-text-justified" style="margin-top: 2rem;">
-          <p>
-            <strong>Efficiency &amp; Scalability.</strong> SAM3 already maintains per-object memory by fusing per-object masks with image features; ReMeDI differs in using a larger memory bank and a different frame-selection strategy.
-            On EndoVis18 with a single RTX 4090, ReMeDI incurs modest overhead compared to SAM3: 6,299 vs 6,010 MB peak GPU memory (+4.8%), 4,820 vs 4,767 MB average GPU memory (+1.1%), and 351.1 vs 329.7 ms/frame latency (+6.5%).
-            The expanded memory bank (M=15 vs 7) adds only ~5% to memory-attention cost since compute is dominated by the image encoder. To ensure scalability, the unconditional buffer has a maximum size of 15 while the ReID bank is capped at 15 entries per object.
-          </p>
         </div>
       </div>
     </div>
