@@ -180,16 +180,16 @@
           <p>We propose <strong>ReMeDI-SAM3</strong>: <strong>Re</strong>fined <strong>Me</strong>mory for <strong>D</strong>isambiguation of <strong>I</strong>dentities with <strong>SAM3</strong>, a training-free extension of SAM3 to enhance temporal consistency and identity preservation in surgical videos. The pipeline is shown above. Our approach (1) restructures SAM3 memory into two components: (i) a <emph>relevance-aware memory</emph> that admits only high-confidence frames to stabilize temporal propagation, and (ii) an <emph>occlusion–aware memory</emph> that selectively retains pre-occlusion appearance cues to facilitate identity recovery. Building upon this design, we further introduce (2) a <emph>novel memory expansion scheme</emph> based on piecewise interpolation of temporal positional encodings, enabling larger memory without retraining, and (3) a <emph>feature-based re-identification module with temporal voting</emph> for robust post-occlusion identity verification and correction. Together, these components improve robustness to occlusions, tracking stability, and reliable instrument re-entry handling in surgical videos. </p>
         </div>
 
-        <h3 class="title is-4 has-text-centered" style="margin-top: 3rem;">Memory Expansion via Temporal Position Interpolation</h3>
-        <div class="content has-text-centered">
-          <img src="./static/images/temporal_pos_encoding_visualization.png" alt="Temporal Position Encoding Visualization" class="method-image" style="max-width: 80%;">
-        </div>
         <div class="content has-text-justified">
           <p>
+            Among these components, the memory expansion scheme is the least intuitive, so we illustrate it in more detail below.
             Long surgical procedures require long-horizon temporal context, yet SAM3 is constrained by a fixed set of temporal positional encodings.
-            We propose a <strong>piecewise interpolation scheme</strong> over temporal positional encodings that preserves the boundary embeddings and samples new positions only in the interior region,
+            Our <strong>piecewise interpolation scheme</strong> preserves the boundary embeddings, which carry distinct temporal priors, and samples new positions only in the interior region,
             enabling substantially larger memory capacity without retraining. Uniform interpolation, in contrast, distorts the learned boundary temporal priors.
           </p>
+        </div>
+        <div class="content has-text-centered">
+          <img src="./static/images/temporal_pos_encoding_visualization.png" alt="Temporal Position Encoding Visualization" class="method-image" style="max-width: 80%;">
         </div>
       </div>
     </div>
@@ -243,8 +243,9 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3 has-text-centered">Results</h2>
-        
+
         <div class="content has-text-centered" style="margin-top: 2rem;">
+          <h3 class="title is-4 has-text-centered">Quantitative Results</h3>
           <p class="has-text-justified">
             Our method achieves state-of-the-art results on the EndoVis17, EndoVis18, and CholecSeg8k benchmarks under zero-shot settings,
             outperforming both vanilla SAM3 and prior training-based approaches. On EndoVis17, ReMeDI-SAM3 improves over vanilla SAM3 by 6% IoU and 5.8% mcIoU.
@@ -461,6 +462,7 @@
             </p>
           </div>
 
+          <h3 class="title is-4 has-text-centered" style="margin-top: 3rem;">Qualitative Results</h3>
           <div style="margin: 2rem auto; max-width: 1000px;">
             <img src="./static/images/main_results.png" alt="Main results comparison" style="width: 100%; display: block; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
             <p style="margin-top: 1rem; font-style: italic; color: #666; text-align: center; font-size: 0.95rem;">
@@ -486,10 +488,11 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3 has-text-centered">Ablation Studies</h2>
+        <p class="has-text-centered" style="margin-top: 0.5rem; color: #666;">All ablation studies are conducted on EndoVis17.</p>
 
         <div class="content has-text-centered" style="margin-top: 2rem;">
           <div style="margin: 0 auto 2rem; max-width: 600px;">
-            <h4 class="title is-5" style="margin-bottom: 1rem;">Impact of Individual Components (EndoVis17)</h4>
+            <h4 class="title is-5" style="margin-bottom: 1rem;">Impact of Individual Components</h4>
             <table class="results-table" style="width: 100%;">
               <thead>
                 <tr>
@@ -514,7 +517,7 @@
 
           <div style="display: flex; flex-wrap: wrap; gap: 2rem; justify-content: center;">
             <div style="flex: 1; min-width: 350px; max-width: 500px;">
-              <h4 class="title is-5" style="margin-bottom: 1rem;">Effect of Memory Expansion (EndoVis17)</h4>
+              <h4 class="title is-5" style="margin-bottom: 1rem;">Effect of Memory Expansion</h4>
               <table class="results-table" style="width: 100%;">
                 <thead>
                   <tr>
