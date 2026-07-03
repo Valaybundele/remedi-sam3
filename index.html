@@ -120,7 +120,9 @@
                   </a>
               </span>
             </div>
-
+            <p style="margin-top: 1rem; font-size: 0.8rem; color: #888; max-width: 640px; margin-left: auto; margin-right: auto;">
+              The PDF provided here is the authors' Accepted Manuscript. This version of the contribution has been accepted for publication, after peer review, but is not the Version of Record and does not reflect post-acceptance improvements or any corrections. The Version of Record will be published in the MICCAI 2026 proceedings (LNCS, Springer Nature). Use of this Accepted Version is subject to the publisher's <a href="https://www.springernature.com/gp/open-research/policies/accepted-manuscript-terms">Accepted Manuscript terms of use</a>.
+            </p>
           </div>
         </div>
       </div>
@@ -242,10 +244,8 @@
   <div class="container is-max-desktop">
     <div class="columns is-centered">
       <div class="column is-full-width">
-        <h2 class="title is-3 has-text-centered">Results</h2>
-
-        <div class="content has-text-centered" style="margin-top: 2rem;">
-          <h3 class="title is-4 has-text-centered">Quantitative Results</h3>
+        <div class="content has-text-centered">
+          <h2 class="title is-3 has-text-centered">Quantitative Results</h2>
           <p class="has-text-justified">
             Our method achieves state-of-the-art results on the EndoVis17, EndoVis18, and CholecSeg8k benchmarks under zero-shot settings,
             outperforming both vanilla SAM3 and prior training-based approaches. On EndoVis17, ReMeDI-SAM3 improves over vanilla SAM3 by 6% IoU and 5.8% mcIoU.
@@ -462,7 +462,7 @@
             </p>
           </div>
 
-          <h3 class="title is-4 has-text-centered" style="margin-top: 3rem;">Qualitative Results</h3>
+          <h2 class="title is-3 has-text-centered" style="margin-top: 3rem;">Qualitative Results</h2>
           <div style="margin: 2rem auto; max-width: 1000px;">
             <img src="./static/images/main_results.png" alt="Main results comparison" style="width: 100%; display: block; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
             <p style="margin-top: 1rem; font-style: italic; color: #666; text-align: center; font-size: 0.95rem;">
@@ -490,6 +490,15 @@
         <h2 class="title is-3 has-text-centered">Ablation Studies</h2>
         <p class="has-text-centered" style="margin-top: 0.5rem; color: #666;">All ablation studies are conducted on EndoVis17.</p>
 
+        <div class="content has-text-justified" style="margin-top: 1.5rem;">
+          <p>
+            Relevance-aware memory filtering alone provides a 3.5% mcIoU gain over vanilla SAM3 by suppressing noisy memory updates, and the occlusion-aware memory partition adds a further 0.5% mcIoU.
+            The feature-based re-identification module contributes 1.4% IoU by correcting post-occlusion identity drift, while expanding the memory adds another 0.8% IoU, for a total improvement of 6.0% IoU and 5.9% mcIoU — confirming that the components are jointly essential for robust long-horizon segmentation.
+            Expanding the memory to 15 frames improves all metrics, whereas further expansion slightly degrades performance, suggesting that an overly large memory introduces less informative context.
+            Finally, replacing the proposed piecewise interpolation with uniform interpolation causes a drop of about 1.2% Challenge IoU and 1% IoU, since uniform resampling distorts the learned boundary temporal priors that piecewise interpolation preserves.
+          </p>
+        </div>
+
         <div class="content has-text-centered" style="margin-top: 2rem;">
           <div style="margin: 0 auto 2rem; max-width: 600px;">
             <h4 class="title is-5" style="margin-bottom: 1rem;">Impact of Individual Components</h4>
@@ -511,7 +520,7 @@
               </tbody>
             </table>
             <p style="margin-top: 1rem; font-style: italic; color: #666; text-align: center; font-size: 0.95rem;">
-              RM: relevance-aware memory, OM: occlusion-aware memory, ReID: feature-based re-identification, ME: memory expansion. All components are jointly essential, yielding a total improvement of 6.0% IoU and 5.9% mcIoU over vanilla SAM3.
+              RM: relevance-aware memory, OM: occlusion-aware memory, ReID: feature-based re-identification, ME: memory expansion.
             </p>
           </div>
 
