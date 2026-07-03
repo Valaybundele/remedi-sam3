@@ -120,9 +120,6 @@
                   </a>
               </span>
             </div>
-            <p style="margin-top: 1rem; font-size: 0.8rem; color: #888; max-width: 640px; margin-left: auto; margin-right: auto;">
-              The PDF provided here is the authors' Accepted Manuscript. This version of the contribution has been accepted for publication, after peer review, but is not the Version of Record and does not reflect post-acceptance improvements or any corrections. The Version of Record will be published in the MICCAI 2026 proceedings (LNCS, Springer Nature). Use of this Accepted Version is subject to the publisher's <a href="https://www.springernature.com/gp/open-research/policies/accepted-manuscript-terms">Accepted Manuscript terms of use</a>.
-            </p>
           </div>
         </div>
       </div>
@@ -488,10 +485,10 @@
     <div class="columns is-centered">
       <div class="column is-full-width">
         <h2 class="title is-3 has-text-centered">Ablation Studies</h2>
-        <p class="has-text-centered" style="margin-top: 0.5rem; color: #666;">All ablation studies are conducted on EndoVis17.</p>
 
         <div class="content has-text-justified" style="margin-top: 1.5rem;">
           <p>
+            We analyze the contribution of each component of ReMeDI-SAM3, with all ablation studies conducted on EndoVis17.
             Relevance-aware memory filtering alone provides a 3.5% mcIoU gain over vanilla SAM3 by suppressing noisy memory updates, and the occlusion-aware memory partition adds a further 0.5% mcIoU.
             The feature-based re-identification module contributes 1.4% IoU by correcting post-occlusion identity drift, while expanding the memory adds another 0.8% IoU, for a total improvement of 6.0% IoU and 5.9% mcIoU — confirming that the components are jointly essential for robust long-horizon segmentation.
             Expanding the memory to 15 frames improves all metrics, whereas further expansion slightly degrades performance, suggesting that an overly large memory introduces less informative context.
