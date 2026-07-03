@@ -451,14 +451,6 @@
             </table>
           </div>
 
-          <div class="content has-text-justified" style="margin-top: 2rem;">
-            <p>
-              <strong>Efficiency &amp; Scalability.</strong> SAM3 already maintains per-object memory by fusing per-object masks with image features; ReMeDI differs in using a larger memory bank and a different frame-selection strategy.
-              On EndoVis18 with a single RTX 4090, ReMeDI incurs modest overhead compared to SAM3: 6,299 vs 6,010 MB peak GPU memory (+4.8%), 4,820 vs 4,767 MB average GPU memory (+1.1%), and 351.1 vs 329.7 ms/frame latency (+6.5%).
-              The expanded memory bank (M=15 vs 7) adds only ~5% to memory-attention cost since compute is dominated by the image encoder. To ensure scalability, the unconditional buffer has a maximum size of 15 while the ReID bank is capped at 15 entries per object.
-            </p>
-          </div>
-
           <h2 class="title is-3 has-text-centered" style="margin-top: 3rem;">Qualitative Results</h2>
           <div style="margin: 2rem auto; max-width: 1000px;">
             <img src="./static/images/main_results.png" alt="Main results comparison" style="width: 100%; display: block; margin: 0 auto; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
